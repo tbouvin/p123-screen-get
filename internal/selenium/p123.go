@@ -2,6 +2,7 @@ package selenium
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 	"strings"
 
@@ -13,9 +14,10 @@ import (
 type Driver struct {
 	wd   selenium.WebDriver
 	conf config.Config
+	stop func() error
 }
 
-func Init() Driver {
+func Init(conf config.Config) Driver {
 	// Start a Selenium WebDriver server instance (if one is not already
 	// running).
 	const (
@@ -34,7 +36,6 @@ func Init() Driver {
 	if err != nil {
 		panic(err) // panic is used only as an example and is not otherwise recommended.
 	}
-	defer service.Stop()
 
 	// Connect to the WebDriver instance running locally.
 	caps := selenium.Capabilities{"browserName": "firefox"}
@@ -43,7 +44,7 @@ func Init() Driver {
 		panic(err)
 	}
 
-	return Driver{wd: wd}
+	return Driver{wd: wd, conf: conf, stop: service.Stop}
 }
 
 func (d Driver) GoHome() {
@@ -53,22 +54,22 @@ func (d Driver) GoHome() {
 }
 
 func (d Driver) Login() error {
-	err := d.wd.Get("https://www.portfolio123.com/app/auth")
+	err := d.wd.Get(d.conf.URLs.Login)
 	if err != nil {
 		return err
 	}
 
-	err = d.enterText("user", "username")
+	err = d.enterText(d.conf.IDs.Username, d.conf.Credentials.Username)
 	if err != nil {
 		return err
 	}
 
-	err = d.enterText("passwd", "password")
+	err = d.enterText(d.conf.IDs.Password, d.conf.Credentials.Password)
 	if err != nil {
 		return err
 	}
 
-	err = d.clickButton("//*[text()='Submit']")
+	err = d.clickXpath(d.conf.Xpaths.LoginButton)
 	if err != nil {
 		return err
 	}
@@ -79,13 +80,12 @@ func (d Driver) Login() error {
 	}
 
 	if strings.Contains(url, "auth2fact") {
-
-		err = d.enterText("passwd", "secondpassword")
+		err = d.enterText(d.conf.IDs.SecondaryPassword, d.conf.Credentials.SecondaryPassword)
 		if err != nil {
 			return err
 		}
 
-		err = d.clickButton("//*[@id=\"wrapper\"]/div[1]/div/div/div/div[1]/div/form/div/div/div[2]/div[2]/button")
+		err = d.clickXpath(d.conf.Xpaths.SecondaryLoginButton)
 		if err != nil {
 			return err
 		}
@@ -94,13 +94,79 @@ func (d Driver) Login() error {
 	return nil
 }
 
-func (d Driver) clickButton(xpath string) error {
+func (d Driver) GetScreen(screenName string) error {
+	err := d.wd.Get(d.conf.URLs.Login)
+	if err != nil {
+		return err
+	}
+
+	err = d.clickXpath(d.conf.Xpaths.ShowAllScreenButton)
+	if err != nil {
+		return err
+	}
+
+	err = d.clickLink(screenName)
+	if err != nil {
+		return err
+	}
+
+	elem, err := d.wd.FindElement(selenium.ByXPATH, d.conf.Xpaths.ScreenDownload)
+	if err != nil {
+		return err
+	}
+
+	link, err := elem.GetAttribute("href")
+	if err != nil {
+		return err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, link, nil)
+	if err != nil {
+		return err
+	}
+
+	cookies, err := d.wd.GetCookies()
+	for _, cookie := range cookies {
+		req.AddCookie(&http.Cookie{Name: cookie.Name, Value: cookie.Value})
+	}
+
+	client := http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+
+	//write response content to file
+
+	err = resp.Body.Close()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (d Driver) clickXpath(xpath string) error {
 	btn, err := d.wd.FindElement(selenium.ByXPATH, xpath)
 	if err != nil {
 		return err
 	}
 
 	err = btn.Click()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (d Driver) clickLink(link string) error {
+	elem, err := d.wd.FindElement(selenium.ByLinkText, link)
+	if err != nil {
+		return err
+	}
+
+	err = elem.Click()
 	if err != nil {
 		return err
 	}

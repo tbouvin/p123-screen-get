@@ -12,6 +12,7 @@ type Config struct {
 	Xpaths      XpathConfig      `yaml:"xpaths"`
 	IDs         IDConfig         `yaml:"ids"`
 	Screens     ScreenConfig     `yaml:"screens"`
+	URLs        URLConfig        `yaml:"urls"`
 }
 
 type CredentialConfig struct {
@@ -23,6 +24,8 @@ type CredentialConfig struct {
 type XpathConfig struct {
 	LoginButton          string `yaml:"login_button"`
 	SecondaryLoginButton string `yaml:"secondary_login_button"`
+	ShowAllScreenButton  string `yaml:"show_all_screen_button"`
+	ScreenDownload       string `yaml:"screen_download"`
 }
 
 type IDConfig struct {
@@ -32,13 +35,22 @@ type IDConfig struct {
 }
 
 type ScreenConfig struct {
-	Monday    []string `yaml:"monday"`
-	Tuesday   []string `yaml:"tuesday"`
-	Wednesday []string `yaml:"wednesday"`
-	Thursday  []string `yaml:"thursday"`
-	Friday    []string `yaml:"friday"`
-	Saturday  []string `yaml:"saturday"`
-	Sunday    []string `yaml:"sunday"`
+	Monday    []ScreenPart `yaml:"monday"`
+	Tuesday   []ScreenPart `yaml:"tuesday"`
+	Wednesday []ScreenPart `yaml:"wednesday"`
+	Thursday  []ScreenPart `yaml:"thursday"`
+	Friday    []ScreenPart `yaml:"friday"`
+	Saturday  []ScreenPart `yaml:"saturday"`
+	Sunday    []ScreenPart `yaml:"sunday"`
+}
+
+type ScreenPart struct {
+	Names []string `yaml:"names"`
+}
+
+type URLConfig struct {
+	Login  string `yaml:"login"`
+	Screen string `yaml:"screen"`
 }
 
 func GetConfig() Config {
