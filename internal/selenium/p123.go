@@ -7,7 +7,7 @@ import (
 
 	"github.com/tebeka/selenium"
 
-	"p123-screen-get/config"
+	"github.com/tbouvin/p123-screen-get/config"
 )
 
 type Driver struct {

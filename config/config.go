@@ -11,6 +11,7 @@ type Config struct {
 	Credentials CredentialConfig `yaml:"credentials"`
 	Xpaths      XpathConfig      `yaml:"xpaths"`
 	IDs         IDConfig         `yaml:"ids"`
+	Screens     ScreenConfig     `yaml:"screens"`
 }
 
 type CredentialConfig struct {
@@ -28,6 +29,16 @@ type IDConfig struct {
 	Username          string `yaml:"username_box_id"`
 	Password          string `yaml:"password_box_id"`
 	SecondaryPassword string `yaml:"secondary_password_box_id"`
+}
+
+type ScreenConfig struct {
+	Monday    []string `yaml:"monday"`
+	Tuesday   []string `yaml:"tuesday"`
+	Wednesday []string `yaml:"wednesday"`
+	Thursday  []string `yaml:"thursday"`
+	Friday    []string `yaml:"friday"`
+	Saturday  []string `yaml:"saturday"`
+	Sunday    []string `yaml:"sunday"`
 }
 
 func GetConfig() Config {

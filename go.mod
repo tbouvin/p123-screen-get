@@ -1,4 +1,4 @@
-module p123-screen-get
+module github.com/tbouvin/p123-screen-get
 
 go 1.13
 
