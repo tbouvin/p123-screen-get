@@ -1,3 +1,4 @@
 vendor
 .idea
-resources/local/config.yml
+resource/local/config.yml
+*.iml
