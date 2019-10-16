@@ -17,6 +17,7 @@ type Config struct {
 	Screens      ScreenConfig     `yaml:"screens"`
 	URLs         URLConfig        `yaml:"urls"`
 	DownloadPath string           `yaml:"download_path"`
+	CSVPath      string           `yaml:"csv_path"`
 }
 
 type CredentialConfig struct {
