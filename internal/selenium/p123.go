@@ -1,10 +1,12 @@
-package selenium
+package p123
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/tebeka/selenium"
 
@@ -18,33 +20,18 @@ type Driver struct {
 }
 
 func Init(conf config.Config) Driver {
-	// Start a Selenium WebDriver server instance (if one is not already
-	// running).
-	const (
-		// These paths will be different on your system.
-		seleniumPath    = "vendor/selenium-server.jar"
-		geckoDriverPath = "vendor/geckodriver"
-		port            = 8080
-	)
-	opts := []selenium.ServiceOption{
-		selenium.StartFrameBuffer(),           // Start an X frame buffer for the browser to run in.
-		selenium.GeckoDriver(geckoDriverPath), // Specify the path to GeckoDriver in order to use Firefox.
-		selenium.Output(os.Stderr),            // Output debug information to STDERR.
-	}
-	selenium.SetDebug(true)
-	service, err := selenium.NewSeleniumService(seleniumPath, port, opts...)
-	if err != nil {
-		panic(err) // panic is used only as an example and is not otherwise recommended.
-	}
+
+	// These paths will be different on your system.
+	var port = 8080
 
 	// Connect to the WebDriver instance running locally.
-	caps := selenium.Capabilities{"browserName": "firefox"}
+	caps := selenium.Capabilities{"browserName": "chrome"}
 	wd, err := selenium.NewRemote(caps, fmt.Sprintf("http://localhost:%d/wd/hub", port))
 	if err != nil {
 		panic(err)
 	}
 
-	return Driver{wd: wd, conf: conf, stop: service.Stop}
+	return Driver{wd: wd, conf: conf, stop: nil}
 }
 
 func (d Driver) GoHome() {
@@ -74,6 +61,8 @@ func (d Driver) Login() error {
 		return err
 	}
 
+	time.Sleep(1 * time.Second)
+
 	url, err := d.wd.CurrentURL()
 	if err != nil {
 		return err
@@ -94,8 +83,8 @@ func (d Driver) Login() error {
 	return nil
 }
 
-func (d Driver) GetScreen(screenName string) error {
-	err := d.wd.Get(d.conf.URLs.Login)
+func (d Driver) GetScreen(screenName string, fileName string) error {
+	err := d.wd.Get(d.conf.URLs.Screen)
 	if err != nil {
 		return err
 	}
@@ -106,6 +95,11 @@ func (d Driver) GetScreen(screenName string) error {
 	}
 
 	err = d.clickLink(screenName)
+	if err != nil {
+		return err
+	}
+
+	err = d.clickID(d.conf.IDs.RunScreenButton)
 	if err != nil {
 		return err
 	}
@@ -135,10 +129,17 @@ func (d Driver) GetScreen(screenName string) error {
 	if err != nil {
 		return err
 	}
+	defer resp.Body.Close()
 
 	//write response content to file
+	out, err := os.Create("filename.txt")
+	if err != nil {
+		return err
+	}
 
-	err = resp.Body.Close()
+	defer out.Close()
+
+	_, err = io.Copy(out, resp.Body)
 	if err != nil {
 		return err
 	}
@@ -148,6 +149,20 @@ func (d Driver) GetScreen(screenName string) error {
 
 func (d Driver) clickXpath(xpath string) error {
 	btn, err := d.wd.FindElement(selenium.ByXPATH, xpath)
+	if err != nil {
+		return err
+	}
+
+	err = btn.Click()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (d Driver) clickID(id string) error {
+	btn, err := d.wd.FindElement(selenium.ByID, id)
 	if err != nil {
 		return err
 	}

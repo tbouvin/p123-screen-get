@@ -1,18 +1,22 @@
 package config
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
+	"path/filepath"
 
 	"gopkg.in/yaml.v2"
 )
 
 type Config struct {
-	Credentials CredentialConfig `yaml:"credentials"`
-	Xpaths      XpathConfig      `yaml:"xpaths"`
-	IDs         IDConfig         `yaml:"ids"`
-	Screens     ScreenConfig     `yaml:"screens"`
-	URLs        URLConfig        `yaml:"urls"`
+	Credentials  CredentialConfig `yaml:"credentials"`
+	Xpaths       XpathConfig      `yaml:"xpaths"`
+	IDs          IDConfig         `yaml:"ids"`
+	Screens      ScreenConfig     `yaml:"screens"`
+	URLs         URLConfig        `yaml:"urls"`
+	DownloadPath string           `yaml:"download_path"`
 }
 
 type CredentialConfig struct {
@@ -32,6 +36,7 @@ type IDConfig struct {
 	Username          string `yaml:"username_box_id"`
 	Password          string `yaml:"password_box_id"`
 	SecondaryPassword string `yaml:"secondary_password_box_id"`
+	RunScreenButton   string `yaml:"run_screen_button"`
 }
 
 type ScreenConfig struct {
@@ -53,19 +58,22 @@ type URLConfig struct {
 	Screen string `yaml:"screen"`
 }
 
-func GetConfig() Config {
-	yamlFile, err := ioutil.ReadFile("conf.yaml")
+func GetConfig() (Config, error) {
+	str, _ := os.Getwd()
+	fmt.Printf("%s\n", str)
+	_, err := filepath.Abs("resources/local/config.yml")
+	yamlFile, err := ioutil.ReadFile("resources/local/config.yml")
 	if err != nil {
 		log.Printf("yamlFile.Get err   #%v ", err)
-		return Config{}
+		return Config{}, err
 	}
 
 	var conf Config
 	err = yaml.Unmarshal(yamlFile, &conf)
 	if err != nil {
 		log.Fatalf("Unmarshal: %v", err)
-		return Config{}
+		return Config{}, err
 	}
 
-	return conf
+	return conf, nil
 }
