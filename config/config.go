@@ -1,23 +1,26 @@
 package config
 
 import (
-	"fmt"
 	"io/ioutil"
 	"log"
-	"os"
 	"path/filepath"
 
 	"gopkg.in/yaml.v2"
 )
 
 type Config struct {
-	Credentials  CredentialConfig `yaml:"credentials"`
-	Xpaths       XpathConfig      `yaml:"xpaths"`
-	IDs          IDConfig         `yaml:"ids"`
-	Screens      ScreenConfig     `yaml:"screens"`
-	URLs         URLConfig        `yaml:"urls"`
-	DownloadPath string           `yaml:"download_path"`
-	CSVPath      string           `yaml:"csv_path"`
+	Credentials CredentialConfig `yaml:"credentials"`
+	Xpaths      XpathConfig      `yaml:"xpaths"`
+	IDs         IDConfig         `yaml:"ids"`
+	Screens     ScreenConfig     `yaml:"screens"`
+	URLs        URLConfig        `yaml:"urls"`
+	FilePaths   FilePathsConfig  `yaml:"file_paths"`
+}
+
+type FilePathsConfig struct {
+	DownloadPath string `yaml:"download_path"`
+	CSVPath      string `yaml:"csv_path"`
+	CombinedPath string `yaml:"combined_path"`
 }
 
 type CredentialConfig struct {
@@ -60,8 +63,6 @@ type URLConfig struct {
 }
 
 func GetConfig() (Config, error) {
-	str, _ := os.Getwd()
-	fmt.Printf("%s\n", str)
 	_, err := filepath.Abs("resources/local/config.yml")
 	yamlFile, err := ioutil.ReadFile("resources/local/config.yml")
 	if err != nil {
