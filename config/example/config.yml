@@ -1,0 +1,75 @@
+file_paths:
+  download_path: /Users/tbouvin/Downloads
+  csv_path: /Users/tbouvin/Google Drive/ScreenDownloads
+  combined_path: /Users/tbouvin/Google Drive/ScreenDownloads
+credentials:
+  username: p123username
+  password: p123password
+  secondary_password: p123secondarypassword
+xpaths:
+  login_button: //*[text()='Submit']
+  secondary_login_button: //*[@id="wrapper"]/div[1]/div/div/div/div[1]/div/form/div/div/div[2]/div[2]/button
+  show_all_screen_button: //*[@id="resultrowspp"]/option[3]
+  screen_download: //*[@id="results-table"]/table/thead/tr[1]/th/div/div[2]/a[1]
+ids:
+  username_box_id: user
+  password_box_id: passwd
+  secondary_password_box_id: passwd
+  run_screen_button: runScreen
+urls:
+  login: https://www.portfolio123.com/app/auth
+  screen: https://www.portfolio123.com/app/opener/SCR
+screens:
+  monday:
+    - names:
+        - 01_01_Mon_LT120
+        - 01_02_Mon_LT120
+    - names:
+        - 02_01_Mon_120to300
+        - 02_02_Mon_120to300
+  tuesday:
+    - names:
+        - 03_01_Tue_300to575
+        - 03_02_Tue_300to575
+    - names:
+        - 04_01_Tue_575to1045
+        - 04_02_Tue_575to1045
+  wednesday:
+    - names:
+        - 05_01_Wed_1045to1890
+        - 05_02_Wed_1045to1890
+    - names:
+        - 06_01_Wed_1890to3550
+        - 06_02_Wed_1890to3550
+  thursday:
+    - names:
+        - 07_01_Thu_3550to8000
+        - 07_02_Thu_3550to8000
+    - names:
+        - 08_01_Thu_8000to35000
+        - 08_02_Thu_8000to35000
+  friday:
+    - names:
+        - 09_01_Fri_GT35000
+        - 09_02_Fri_GT35000
+    - names:
+        - 10_01_Fri_Canada
+        - 10_02_Fri_Canada
+  saturday:
+    - names:
+        - 04_02_Tue_575to1045
+    - names:
+        - 05_01_Wed_1045to1890
+        - 05_02_Wed_1045to1890
+    - names:
+        - 06_01_Wed_1890to3550
+        - 06_02_Wed_1890to3550
+  sunday:
+    - names:
+        - 02_01_Mon_120to300
+        - 02_02_Mon_120to300
+    - names:
+        - 03_01_Tue_300to575
+        - 03_02_Tue_300to575
+    - names:
+        - 04_01_Tue_575to1045

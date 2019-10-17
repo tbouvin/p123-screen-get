@@ -62,8 +62,8 @@ type URLConfig struct {
 	Screen string `yaml:"screen"`
 }
 
-func GetConfig() (Config, error) {
-	_, err := filepath.Abs("resources/local/config.yml")
+func GetConfig(configFile *string) (Config, error) {
+	_, err := filepath.Abs(*configFile)
 	yamlFile, err := ioutil.ReadFile("resources/local/config.yml")
 	if err != nil {
 		log.Printf("yamlFile.Get err   #%v ", err)

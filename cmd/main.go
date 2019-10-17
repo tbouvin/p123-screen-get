@@ -15,12 +15,10 @@ func main() {
 	mergeFiles := flag.Bool("mergefiles", true, "False will not merge CSVs")
 	getScreens := flag.Bool("getscreens", true, "False will not get screens from p123")
 	convertFiles := flag.Bool("convertfiles", true, "False will not convert screen files to CSV")
+	configFile := flag.String("config", "resources/local/config.yml", "Location of yaml configuration")
 	flag.Parse()
-	*convertFiles = true
-	*mergeFiles = true
-	*getScreens = false
 
-	c, err := config.GetConfig()
+	c, err := config.GetConfig(configFile)
 	if err != nil {
 		panic(err)
 	}
