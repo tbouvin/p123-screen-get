@@ -48,7 +48,7 @@ func ConvertToCSV(c config.Config, date string) error {
 		scanner.Split(bufio.ScanLines)
 
 		csvFile := fmt.Sprintf("%s/%s_%s.csv", c.FilePaths.CSVPath, date, nameLine)
-		cf, err := os.OpenFile(csvFile, os.O_RDWR|os.O_CREATE, 0)
+		cf, err := os.OpenFile(csvFile, os.O_RDWR|os.O_CREATE, os.ModePerm)
 		if err != nil {
 			return err
 		}

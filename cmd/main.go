@@ -30,21 +30,29 @@ func main() {
 
 	var screenDay []config.ScreenPart
 
-	switch time.Now().Weekday() {
+	weekday := time.Now().Weekday()
+	switch weekday {
 	case time.Monday:
 		screenDay = c.Screens.Monday
+		break
 	case time.Tuesday:
 		screenDay = c.Screens.Tuesday
+		break
 	case time.Wednesday:
 		screenDay = c.Screens.Wednesday
+		break
 	case time.Thursday:
 		screenDay = c.Screens.Thursday
+		break
 	case time.Friday:
 		screenDay = c.Screens.Friday
+		break
 	case time.Saturday:
 		screenDay = c.Screens.Saturday
+		break
 	case time.Sunday:
 		screenDay = c.Screens.Sunday
+		break
 	default:
 		panic(nil)
 	}
@@ -57,16 +65,25 @@ func main() {
 		}
 		time.Sleep(1 * time.Second)
 
-		count := 0
+		count := 1
 		for _, screenSet := range screenDay {
 			for _, screen := range screenSet.Names {
-				fileName := fmt.Sprintf("%s/%d%s.xls", c.FilePaths.DownloadPath, count, formattedDate)
+				if count == 1 || count == 2 {
+					count++
+					continue
+				}
+				fileName := fmt.Sprintf("%s/%d_%s.xls", c.FilePaths.DownloadPath, count, formattedDate)
 				err = d.GetScreen(screen, fileName)
 				if err != nil {
 					panic(err)
 				}
 				count++
 			}
+		}
+
+		err = d.Logout()
+		if err != nil {
+			panic(err)
 		}
 	}
 

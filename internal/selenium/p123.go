@@ -40,6 +40,15 @@ func (d Driver) GoHome() {
 	}
 }
 
+func (d Driver) Logout() error {
+	err := d.wd.Close()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (d Driver) Login() error {
 	err := d.wd.Get(d.conf.URLs.Login)
 	if err != nil {
@@ -132,7 +141,7 @@ func (d Driver) GetScreen(screenName string, fileName string) error {
 	defer resp.Body.Close()
 
 	//write response content to file
-	out, err := os.Create("filename.txt")
+	out, err := os.Create(fileName)
 	if err != nil {
 		return err
 	}
