@@ -68,11 +68,7 @@ func main() {
 		count := 1
 		for _, screenSet := range screenDay {
 			for _, screen := range screenSet.Names {
-				if count == 1 || count == 2 {
-					count++
-					continue
-				}
-				fileName := fmt.Sprintf("%s/%d_%s.xls", c.FilePaths.DownloadPath, count, formattedDate)
+				fileName := fmt.Sprintf("%s/%d_%s.csv", c.FilePaths.DownloadPath, count, formattedDate)
 				err = d.GetScreen(screen, fileName)
 				if err != nil {
 					panic(err)
