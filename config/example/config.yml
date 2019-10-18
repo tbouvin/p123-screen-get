@@ -16,6 +16,7 @@ ids:
   password_box_id: passwd
   secondary_password_box_id: passwd
   run_screen_button: runScreen
+  ticker_link: Ticker
 urls:
   login: https://www.portfolio123.com/app/auth
   screen: https://www.portfolio123.com/app/opener/SCR

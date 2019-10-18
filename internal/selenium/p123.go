@@ -113,6 +113,11 @@ func (d Driver) GetScreen(screenName string, fileName string) error {
 		return err
 	}
 
+	err = d.clickLink(d.conf.IDs.TickerLink)
+	if err != nil {
+		return err
+	}
+
 	elem, err := d.wd.FindElement(selenium.ByXPATH, d.conf.Xpaths.ScreenDownload)
 	if err != nil {
 		return err

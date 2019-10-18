@@ -41,6 +41,7 @@ type IDConfig struct {
 	Password          string `yaml:"password_box_id"`
 	SecondaryPassword string `yaml:"secondary_password_box_id"`
 	RunScreenButton   string `yaml:"run_screen_button"`
+	TickerLink        string `yaml:"ticker_link"`
 }
 
 type ScreenConfig struct {
