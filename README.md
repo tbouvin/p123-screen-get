@@ -3,6 +3,11 @@
 Download GoLang:
 https://golang.org/dl/
 
+#### (macOS) Download Homebrew: 
+* /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+#### (macOS) Download Selenium: 
+* brew install selenium-server-standalone
+
 ## Clone Repo
 git clone https://github.com/tbouvin/p123-screen-get.git
 
@@ -16,4 +21,8 @@ Copy config from config/examples to resources/local/config.yml
 Replace file paths, username, password, secondary password
 
 ## Run
+selenium-server -port 8080
+
+In separate terminal:
+
 ./p123screenget
