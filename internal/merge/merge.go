@@ -94,7 +94,7 @@ func MergeFiles(c config.Config, date string, todaysScreens []config.ScreenPart)
 		}
 	}
 
-	combinedFile, err := os.OpenFile(fmt.Sprintf("%s/%s_combined.csv", c.FilePaths.CombinedPath, date), os.O_RDWR|os.O_CREATE, 0)
+	combinedFile, err := os.OpenFile(fmt.Sprintf("%s/%s_combined.csv", c.FilePaths.CombinedPath, date), os.O_RDWR|os.O_CREATE, os.ModePerm)
 	if err != nil {
 		return err
 	}
