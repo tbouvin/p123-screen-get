@@ -15,6 +15,7 @@ type Config struct {
 	Screens     ScreenConfig     `yaml:"screens"`
 	URLs        URLConfig        `yaml:"urls"`
 	FilePaths   FilePathsConfig  `yaml:"file_paths"`
+	Selenium    SeleniumConfig   `yaml:"selenium"`
 }
 
 type FilePathsConfig struct {
@@ -61,6 +62,10 @@ type ScreenPart struct {
 type URLConfig struct {
 	Login  string `yaml:"login"`
 	Screen string `yaml:"screen"`
+}
+
+type SeleniumConfig struct {
+	Port string `yaml:"port"`
 }
 
 func GetConfig(configFile *string) (Config, error) {

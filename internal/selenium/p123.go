@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"os/exec"
 	"strings"
 	"time"
 
@@ -17,21 +18,23 @@ type Driver struct {
 	wd   selenium.WebDriver
 	conf config.Config
 	stop func() error
+	cmd  *exec.Cmd
 }
 
 func Init(conf config.Config) Driver {
-
-	// These paths will be different on your system.
-	var port = 8080
-
+	cmd := exec.Command("selenium-server", "-port", conf.Selenium.Port)
+	err := cmd.Start()
+	if err != nil {
+		panic(err)
+	}
 	// Connect to the WebDriver instance running locally.
 	caps := selenium.Capabilities{"browserName": "chrome"}
-	wd, err := selenium.NewRemote(caps, fmt.Sprintf("http://localhost:%d/wd/hub", port))
+	wd, err := selenium.NewRemote(caps, fmt.Sprintf("http://localhost:%d/wd/hub", conf.Selenium.Port))
 	if err != nil {
 		panic(err)
 	}
 
-	return Driver{wd: wd, conf: conf, stop: nil}
+	return Driver{wd: wd, conf: conf, stop: nil, cmd: cmd}
 }
 
 func (d Driver) GoHome() {
@@ -42,6 +45,11 @@ func (d Driver) GoHome() {
 
 func (d Driver) Logout() error {
 	err := d.wd.Close()
+	if err != nil {
+		return err
+	}
+
+	err = d.cmd.Process.Kill()
 	if err != nil {
 		return err
 	}

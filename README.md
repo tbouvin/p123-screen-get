@@ -21,8 +21,4 @@ Copy config from config/examples to resources/local/config.yml
 Replace file paths, username, password, secondary password
 
 ## Run
-selenium-server -port 8080
-
-In separate terminal:
-
 ./p123screenget
