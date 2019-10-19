@@ -27,20 +27,15 @@ func Init(conf config.Config) Driver {
 	if err != nil {
 		panic(err)
 	}
+
 	// Connect to the WebDriver instance running locally.
 	caps := selenium.Capabilities{"browserName": "chrome"}
-	wd, err := selenium.NewRemote(caps, fmt.Sprintf("http://localhost:%d/wd/hub", conf.Selenium.Port))
+	wd, err := selenium.NewRemote(caps, fmt.Sprintf("http://localhost:%s/wd/hub", conf.Selenium.Port))
 	if err != nil {
 		panic(err)
 	}
 
 	return Driver{wd: wd, conf: conf, stop: nil, cmd: cmd}
-}
-
-func (d Driver) GoHome() {
-	if err := d.wd.Get("www.portfolio123.com"); err != nil {
-		panic(err)
-	}
 }
 
 func (d Driver) Logout() error {
