@@ -5,9 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/tbouvin/p123-screen-get/internal/merge"
-
 	"github.com/tbouvin/p123-screen-get/config"
+	"github.com/tbouvin/p123-screen-get/internal/merge"
 	p123 "github.com/tbouvin/p123-screen-get/internal/selenium"
 )
 
