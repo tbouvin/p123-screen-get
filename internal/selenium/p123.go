@@ -27,6 +27,7 @@ func Init(conf config.Config) Driver {
 	if err != nil {
 		panic(err)
 	}
+	time.Sleep(1 * time.Second)
 
 	// Connect to the WebDriver instance running locally.
 	caps := selenium.Capabilities{"browserName": "chrome"}
