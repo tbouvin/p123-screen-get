@@ -53,6 +53,8 @@ func (d Driver) Logout() error {
 		return err
 	}
 
+	time.Sleep(1 * time.Second)
+
 	err = d.cmd.Process.Kill()
 	if err != nil {
 		return err
