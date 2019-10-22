@@ -22,4 +22,5 @@ If running Windows, replace selenium command/arguments
 
 ## Run
 cd p123-screen-get
+
 go run cmd/main.go
