@@ -48,6 +48,11 @@ func (d Driver) Logout() error {
 		return err
 	}
 
+	err = d.wd.Quit()
+	if err != nil {
+		return err
+	}
+
 	err = d.cmd.Process.Kill()
 	if err != nil {
 		return err
