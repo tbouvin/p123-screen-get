@@ -65,7 +65,9 @@ type URLConfig struct {
 }
 
 type SeleniumConfig struct {
-	Port string `yaml:"port"`
+	Port      string   `yaml:"port"`
+	Command   string   `yaml:"command"`
+	Arguments []string `yaml:"arguments"`
 }
 
 func GetConfig(configFile *string) (Config, error) {

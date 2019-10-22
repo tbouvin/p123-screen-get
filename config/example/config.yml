@@ -19,6 +19,8 @@ ids:
   ticker_link: Ticker
 selenium:
   port: 8080
+  command: selenium-server
+  arguments: []
 urls:
   login: https://www.portfolio123.com/app/auth
   screen: https://www.portfolio123.com/app/opener/SCR

@@ -21,8 +21,11 @@ type Driver struct {
 	cmd  *exec.Cmd
 }
 
+//conf.Selenium.Command
 func Init(conf config.Config) Driver {
-	cmd := exec.Command("selenium-server", "-port", conf.Selenium.Port)
+	args := append(conf.Selenium.Arguments, "-port")
+	args = append(args, conf.Selenium.Port)
+	cmd := exec.Command(conf.Selenium.Command, args...)
 	err := cmd.Start()
 	if err != nil {
 		panic(err)
