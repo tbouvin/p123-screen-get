@@ -27,3 +27,8 @@ go run cmd/main.go
 
 ## Help
 go run cmd/main.go --help
+### examples: 
+#### Only download
+go run cmd/main.go -convertfiles=false -mergefile=false
+#### Only merge
+go run cmd/main.go -getscreens=false -mergefile=false
