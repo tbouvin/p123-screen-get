@@ -1,6 +1,7 @@
 # Portfolio123 Screen Utility
 This utility allows for automatically downloading running and downloading
 screens from portfolio123.com
+
 By default it retrieves the sets of screens to run for the day from the config.yml
 file provided. It will attempt to merge those files together as a single
 csv.
