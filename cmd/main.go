@@ -1,9 +1,10 @@
 package main
 
 import (
+	"bufio"
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"time"
 
 	"github.com/tbouvin/p123-screen-get/config"
@@ -11,20 +12,28 @@ import (
 	p123 "github.com/tbouvin/p123-screen-get/internal/selenium"
 )
 
-const alreadyRanFileName = "/screensRan"
-
-func checkIfDownloadsExist(d string, path string) bool {
-	b, err := ioutil.ReadFile(path)
+func didScreenRun(screenName string, path string) bool {
+	file, err := os.Open(path)
 	if err != nil {
 		return false
 	}
+	defer file.Close()
 
-	date := string(b)
-	if date == d {
-		return true
+	scanner := bufio.NewScanner(file)
+	found := false
+	for scanner.Scan() {
+		t := scanner.Text()
+		if screenName == t {
+			found = true
+		}
 	}
 
-	return false
+	err = scanner.Err()
+	if err != nil || !found {
+		return false
+	}
+
+	return true
 }
 
 func main() {
@@ -43,6 +52,8 @@ func main() {
 	formattedMonth := time.Now().Month()
 	formattedYear := time.Now().Year() - 2000
 	formattedDate := fmt.Sprintf("%02d%02d%02d", formattedMonth, formattedDay, formattedYear)
+
+	alreadyRanFileName := c.FilePaths.DownloadPath + "/." + formattedDate
 
 	var screenDay []config.ScreenPart
 
@@ -73,9 +84,9 @@ func main() {
 		panic(nil)
 	}
 
-	exists := checkIfDownloadsExist(formattedDate, c.FilePaths.DownloadPath+alreadyRanFileName)
-	if exists {
-		return
+	file, err := os.OpenFile(alreadyRanFileName, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0644)
+	if err != nil {
+		panic(err)
 	}
 
 	if *getScreens {
@@ -89,16 +100,20 @@ func main() {
 		count := 1
 		for _, screenSet := range screenDay {
 			for _, screen := range screenSet.Names {
-				fileName := fmt.Sprintf("%s/%d_%s.csv", c.FilePaths.DownloadPath, count, formattedDate)
-				for retry := 0; retry < 5; retry++ {
-					err = d.GetScreen(screen, fileName)
-					if err == nil {
-						break
+				if !didScreenRun(screen, alreadyRanFileName) {
+					fileName := fmt.Sprintf("%s/%d_%s.csv", c.FilePaths.DownloadPath, count, formattedDate)
+					for retry := 0; retry < 5; retry++ {
+						err = d.GetScreen(screen, fileName)
+						if err == nil {
+							_, _ = file.Write([]byte(screen))
+							_, _ = file.Write([]byte("\n"))
+							break
+						}
 					}
-				}
 
-				if err != nil {
-					panic(err)
+					if err != nil {
+						panic(err)
+					}
 				}
 				count++
 			}
@@ -124,10 +139,5 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-	}
-
-	err = ioutil.WriteFile(c.FilePaths.DownloadPath+alreadyRanFileName, []byte(formattedDate), 0644)
-	if err != nil {
-		panic(err)
 	}
 }
