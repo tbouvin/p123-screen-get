@@ -3,12 +3,29 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"time"
 
 	"github.com/tbouvin/p123-screen-get/config"
 	"github.com/tbouvin/p123-screen-get/internal/merge"
 	p123 "github.com/tbouvin/p123-screen-get/internal/selenium"
 )
+
+const alreadyRanFileName = "/screensRan"
+
+func checkIfDownloadsExist(d string, path string) bool {
+	b, err := ioutil.ReadFile(path)
+	if err != nil {
+		return false
+	}
+
+	date := string(b)
+	if date == d {
+		return true
+	}
+
+	return false
+}
 
 func main() {
 	mergeFiles := flag.Bool("mergefiles", true, "False will not merge CSVs")
@@ -54,6 +71,11 @@ func main() {
 		break
 	default:
 		panic(nil)
+	}
+
+	exists := checkIfDownloadsExist(formattedDate, c.FilePaths.DownloadPath+alreadyRanFileName)
+	if exists {
+		return
 	}
 
 	if *getScreens {
@@ -102,5 +124,10 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
+	}
+
+	err = ioutil.WriteFile(c.FilePaths.DownloadPath+alreadyRanFileName, []byte(formattedDate), 0644)
+	if err != nil {
+		panic(err)
 	}
 }
