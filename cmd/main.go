@@ -140,4 +140,6 @@ func main() {
 			panic(err)
 		}
 	}
+
+	time.Sleep(time.Duration(c.SleepTime) * time.Second)
 }

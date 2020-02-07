@@ -16,6 +16,7 @@ type Config struct {
 	URLs        URLConfig        `yaml:"urls"`
 	FilePaths   FilePathsConfig  `yaml:"file_paths"`
 	Selenium    SeleniumConfig   `yaml:"selenium"`
+	SleepTime   int              `yaml:"sleep_time"`
 }
 
 type FilePathsConfig struct {
