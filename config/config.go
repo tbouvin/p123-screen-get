@@ -72,8 +72,8 @@ type SeleniumConfig struct {
 }
 
 func GetConfig(configFile *string) (Config, error) {
-	_, err := filepath.Abs(*configFile)
-	yamlFile, err := ioutil.ReadFile("resources/local/config.yml")
+	path, err := filepath.Abs(*configFile)
+	yamlFile, err := ioutil.ReadFile(path)
 	if err != nil {
 		log.Printf("yamlFile.Get err   #%v ", err)
 		return Config{}, err
