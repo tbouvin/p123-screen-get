@@ -10,7 +10,8 @@ selenium:
   port: 8080
   command: selenium-server
   arguments: []
-#  Windows
+  #  Windows
+#  port: 9090
 #  command: java
 #  arguments: ["-jar", "C:/Selenium/selenium-server.jar"]
 xpaths:
