@@ -36,14 +36,16 @@ type XpathConfig struct {
 	SecondaryLoginButton string `yaml:"secondary_login_button"`
 	ShowAllScreenButton  string `yaml:"show_all_screen_button"`
 	ScreenDownload       string `yaml:"screen_download"`
+	MultipleLoginButton  string `yaml:"multiple_login_button"`
 }
 
 type IDConfig struct {
-	Username          string `yaml:"username_box_id"`
-	Password          string `yaml:"password_box_id"`
-	SecondaryPassword string `yaml:"secondary_password_box_id"`
-	RunScreenButton   string `yaml:"run_screen_button"`
-	TickerLink        string `yaml:"ticker_link"`
+	Username               string `yaml:"username_box_id"`
+	Password               string `yaml:"password_box_id"`
+	SecondaryPassword      string `yaml:"secondary_password_box_id"`
+	RunScreenButton        string `yaml:"run_screen_button"`
+	TickerLink             string `yaml:"ticker_link"`
+	SkipMultipleLoginCheck string `yaml:"skip_multiple_login_check"`
 }
 
 type ScreenConfig struct {

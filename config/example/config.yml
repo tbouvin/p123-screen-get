@@ -1,7 +1,7 @@
 file_paths:
   download_path: /Users/tbouvin/Downloads
-  csv_path: /Users/tbouvin/Google Drive/ScreenDownloads
-  combined_path: /Users/tbouvin/Google Drive/ScreenDownloads
+  csv_path: /Users/tbouvin/GoogleDrive/ScreenDownloads
+  combined_path: /Users/tbouvin/GoogleDrive/ScreenDownloads
 credentials:
   username: p123username
   password: p123password
@@ -19,12 +19,14 @@ xpaths:
   secondary_login_button: //*[@id="wrapper"]/div[1]/div/div/div/div[1]/div/form/div/div/div[2]/div[2]/button
   show_all_screen_button: //*[@id="resultrowspp"]/option[3]
   screen_download: //*[@id="run-section"]/div[1]/div[1]/div/div[2]/a[2]
+  multiple_login_button: //*[@id="auth"]/div/div/div/div/div/div/div/div[2]/button
 ids:
   username_box_id: user
   password_box_id: passwd
   secondary_password_box_id: passwd
   run_screen_button: runScreen
   ticker_link: Ticker
+  skip_multiple_login_check: skipMultipleLoginsCheck
 urls:
   login: https://www.portfolio123.com/app/auth
   screen: https://www.portfolio123.com/app/opener/SCR

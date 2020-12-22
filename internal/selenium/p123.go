@@ -79,6 +79,11 @@ func (d Driver) Login() error {
 		return err
 	}
 
+	err = d.clickID(d.conf.IDs.SkipMultipleLoginCheck)
+	if err != nil {
+		//TODO do nothing for now
+	}
+
 	err = d.clickXpath(d.conf.Xpaths.LoginButton)
 	if err != nil {
 		return err
@@ -98,6 +103,19 @@ func (d Driver) Login() error {
 		}
 
 		err = d.clickXpath(d.conf.Xpaths.SecondaryLoginButton)
+		if err != nil {
+			return err
+		}
+	}
+
+	time.Sleep(2 * time.Second)
+
+	url, err = d.wd.CurrentURL()
+	if err != nil {
+		return err
+	}
+	if strings.Contains(url, "multipleLogins") {
+		err = d.clickXpath(d.conf.Xpaths.MultipleLoginButton)
 		if err != nil {
 			return err
 		}

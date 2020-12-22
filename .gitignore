@@ -4,3 +4,4 @@ vendor
 resources/local/config.yml
 p123screenget
 p123
+*.log
