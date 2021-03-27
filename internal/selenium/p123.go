@@ -5,11 +5,11 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"os/exec"
 	"strings"
 	"time"
 
 	"github.com/tebeka/selenium"
+	"github.com/tebeka/selenium/chrome"
 
 	"github.com/tbouvin/p123-screen-get/config"
 )
@@ -18,28 +18,28 @@ type Driver struct {
 	wd   selenium.WebDriver
 	conf config.Config
 	stop func() error
-	cmd  *exec.Cmd
 }
 
 //conf.Selenium.Command
 func Init(conf config.Config) Driver {
-	args := append(conf.Selenium.Arguments, "-port")
-	args = append(args, conf.Selenium.Port)
-	cmd := exec.Command(conf.Selenium.Command, args...)
-	err := cmd.Start()
-	if err != nil {
-		panic(err)
-	}
-	time.Sleep(1 * time.Second)
-
 	// Connect to the WebDriver instance running locally.
 	caps := selenium.Capabilities{"browserName": "chrome"}
+	chromeCaps := chrome.Capabilities{
+		Path: "",
+		Args: []string{
+			"--headless",
+			"--no-sandbox",
+		},
+	}
+
+	caps.AddChrome(chromeCaps)
+
 	wd, err := selenium.NewRemote(caps, fmt.Sprintf("http://localhost:%s/wd/hub", conf.Selenium.Port))
 	if err != nil {
 		panic(err)
 	}
 
-	return Driver{wd: wd, conf: conf, stop: nil, cmd: cmd}
+	return Driver{wd: wd, conf: conf, stop: nil}
 }
 
 func (d Driver) Logout() error {
@@ -49,18 +49,8 @@ func (d Driver) Logout() error {
 	}
 
 	err = d.wd.Quit()
-	if err != nil {
-		return err
-	}
 
-	time.Sleep(2 * time.Second)
-
-	err = d.cmd.Process.Kill()
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }
 
 func (d Driver) Login() error {
@@ -89,7 +79,7 @@ func (d Driver) Login() error {
 		return err
 	}
 
-	time.Sleep(1 * time.Second)
+	time.Sleep(5 * time.Second)
 
 	url, err := d.wd.CurrentURL()
 	if err != nil {
@@ -108,7 +98,7 @@ func (d Driver) Login() error {
 		}
 	}
 
-	time.Sleep(2 * time.Second)
+	time.Sleep(5 * time.Second)
 
 	url, err = d.wd.CurrentURL()
 	if err != nil {

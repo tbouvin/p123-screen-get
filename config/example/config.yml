@@ -7,13 +7,7 @@ credentials:
   password: p123password
   secondary_password: p123secondarypassword
 selenium:
-  port: 8080
-  command: selenium-server
-  arguments: []
-  #  Windows
-#  port: 9090
-#  command: java
-#  arguments: ["-jar", "C:/Selenium/selenium-server.jar"]
+  port: 4444
 xpaths:
   login_button: //*[text()='Submit']
   secondary_login_button: //*[@id="wrapper"]/div[1]/div/div/div/div[1]/div/form/div/div/div[2]/div[2]/button

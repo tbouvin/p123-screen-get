@@ -14,12 +14,14 @@ Screens contained in a different set is placed in the rows below the first set o
 Download GoLang:
 https://golang.org/dl/
 
-#### (macOS) Download Homebrew: 
-* Copy following in terminal and run:
+#### Download chromedriver 89
+https://chromedriver.chromium.org/downloads
 
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-#### (macOS) Download Selenium: 
-* brew install selenium-server-standalone
+#### Download Docker
+https://www.docker.com/products/docker-desktop
+
+#### Run selenium docker image
+` docker run -d --restart unless-stopped -p 4444:4444 selenium/standalone-chrome:89.0`
 
 ## Clone Repo
 git clone https://github.com/tbouvin/p123-screen-get.git
@@ -28,8 +30,6 @@ git clone https://github.com/tbouvin/p123-screen-get.git
 Copy config from config/examples to resources/local/config.yml
 
 Replace file paths, username, password, secondary password
-
-If running Windows, replace selenium command/arguments
 
 ## Run
 cd p123-screen-get
