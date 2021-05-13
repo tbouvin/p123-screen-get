@@ -13,7 +13,7 @@ import (
 )
 
 func findFiles(c config.Config, date string) ([]string, error) {
-	matches, err := filepath.Glob(fmt.Sprintf("%s/*%s*", c.FilePaths.DownloadPath, date))
+	matches, err := filepath.Glob(fmt.Sprintf("%s/*%s.csv", c.FilePaths.DownloadPath, date))
 	if err != nil {
 		return nil, err
 	}
