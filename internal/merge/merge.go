@@ -99,7 +99,7 @@ func MergeFiles(c config.Config, date string, todaysScreens []config.ScreenPart)
 		return err
 	}
 
-	for index, _ := range c.Screens.Monday {
+	for index := range c.Screens.Monday {
 		newData := true
 		lineNum := 0
 		curLine := 0
