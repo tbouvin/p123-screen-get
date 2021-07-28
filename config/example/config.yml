@@ -30,6 +30,7 @@ ids:
 urls:
   login: https://www.portfolio123.com/app/auth
   screen: https://www.portfolio123.com/app/opener/SCR
+  base: https://www.portfolio123.com
 screens:
   monday:
     - names:
