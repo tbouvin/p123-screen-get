@@ -63,9 +63,9 @@ type ScreenPart struct {
 }
 
 type URLConfig struct {
-	Login  string `yaml:"login"`
-	Screen string `yaml:"screen"`
-	Base   string `yaml:"base`
+	Login   string `yaml:"login"`
+	Screen  string `yaml:"screen"`
+	BaseURL string `yaml:"base"`
 }
 
 type SeleniumConfig struct {

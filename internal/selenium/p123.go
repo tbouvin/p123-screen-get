@@ -160,7 +160,7 @@ func (d Driver) GetScreen(screenName string, fileName string) error {
 		return err
 	}
 
-	req, err := http.NewRequest(http.MethodGet, d.conf.URLs.Base+link, nil)
+	req, err := http.NewRequest(http.MethodGet, d.conf.URLs.BaseURL+link, nil)
 	if err != nil {
 		return err
 	}
